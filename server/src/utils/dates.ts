@@ -1,1 +1,1 @@
-export const FORMAT_STRING = 'yyyMMdd\tHH:mm:ss';
+export const LOGGING_DATE_FORMAT = 'yyy-MM-ddTHH:mm:ss';

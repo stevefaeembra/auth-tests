@@ -1,5 +1,9 @@
 import mongoose from 'mongoose';
 
+/**
+ * Connect to the mongodb instance defined in the Environment Variable
+ * DB_URI.
+ */
 export const connectToDB = async () => {
   if (!process.env.DB_URI) {
     throw new Error('DB Environment Variable not specified');

@@ -6,6 +6,9 @@ type Origin = string | undefined;
 type StaticOrigin = boolean | string | RegExp | (boolean | string | RegExp)[];
 type Callback = (err: Error | null, origin?: StaticOrigin) => void;
 
+/**
+ * Define CORS options that checks if a request is allowed.
+ */
 export const corsOptions: CorsOptions = {
   origin: (origin: Origin, callback: Callback) =>
     ALLOWED_ORIGINS.includes(origin as string) || !origin

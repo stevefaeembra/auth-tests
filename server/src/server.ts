@@ -7,10 +7,15 @@ import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 
+import { router as accounts } from '~/accounts/account.routes';
+import { router as appConfig } from '~/app/app.routes';
+import { router as employees } from '~/employees/employee.routes';
+import { verifyJwt } from '~/middleware/authentication';
 import { corsOptions } from '~/middleware/cors';
 import { credentials } from '~/middleware/credentials';
 import { errorHandler } from '~/middleware/errors';
 import { logger } from '~/middleware/logger';
+import { router as users } from '~/users/user.routes';
 
 import { connectToDB } from './db';
 
@@ -33,10 +38,21 @@ app.use(express.urlencoded({ extended: false }));
 // built-in middleware to handle json data.
 app.use(express.json());
 
-// Routing;
+// Routing
+const router = express.Router();
+
+router.use('/app', appConfig);
+router.use('/accounts', accounts);
+
+router.use(verifyJwt);
+// app.use(verifyJwt, '/employees', employees);
+router.use('/users', users);
+router.use('/employees', employees);
 
 // This should be last
-app.use(errorHandler);
+router.use(errorHandler);
+
+app.use('/api', router);
 
 mongoose.connection.once('open', () => {
   app.listen(PORT, () => console.log('Server listening on port: ', PORT));
