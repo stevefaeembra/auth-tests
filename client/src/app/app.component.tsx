@@ -56,7 +56,7 @@ export enum Roles {
 const App: FC = (): ReactElement => {
   const { data: appConfig } = useAppConfig();
   const auth = useAuthentication();
-  console.log('AUTHENTICATION DATA: ', auth);
+  //console.log('AUTHENTICATION DATA: ', auth);
   // const {
   //   data: user,
   //   error: userError,

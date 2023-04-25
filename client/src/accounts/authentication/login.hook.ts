@@ -30,8 +30,11 @@ export const useLogin = () => {
 
   return useMutation(
     async (form: LoginFormType) => {
-      // console.log('LOGIN FORM: ', form);
-      const data = await apiClient(ENDPOINT, form);
+      //console.log('** In the Mutator, big whoop! **');
+      //console.log('LOGIN FORM: ', form);
+      //console.log('ENDPOINT:', ENDPOINT);
+      const response = await apiClient(ENDPOINT, form);
+      //console.log('Mutation response', response);
       // const response = await fetch(ENDPOINT, {
       //   method: 'POST',
       //   headers: {
@@ -39,27 +42,38 @@ export const useLogin = () => {
       //   },
       //   body: JSON.stringify(form),
       // });
+      // console.log('data', response);
 
+      // TODO we get back JSON, not a fetch object
       // if (!response.ok) {
-      //   const error = await response.json();
-
-      //   throw new Error(`Problem Logging in: ${error.message}`);
+      //   //const error = await response.json();
+      //   const error = response;
+      //   throw new Error(`Problem Logging in: ${JSON.stringify(error)}`);
       // }
 
-      // const data = await response.json();
-      // console.log('LOGIN RESPONSE: ', data);
+      //TODO find out why we were using the fetch API pattern here
+      //const data = await response.json();
+      const data = response;
+      //console.log('LOGIN RESPONSE: ', data);
 
       setUserId(data.id);
       setAccessToken(data.accessToken);
       // return data;
       // const data: User = await response.json();
-      console.log('LOGGED IN USER: ', data);
+      //console.log('LOGGED IN USER: ', data);
       // setUser(data);
       // navigate(from, { replace: true });
 
       return data;
       // return LoginFormSchema.parse(data);
     },
+
+    {
+      onError: error => {
+        console.log('THROWN ERROR', error);
+      },
+    },
+
     // {
     //   onSuccess: (data, variables, context) => {
     //     const from = location.state?.from?.pathname ?? '/';

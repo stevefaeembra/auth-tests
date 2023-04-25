@@ -10,7 +10,7 @@ interface Props {
 
 export const Authorization: FC<Props> = ({ roles }) => {
   const { user, setUser, accessToken } = useAuthentication();
-  console.log('IS AUTHORIZATION: ', { user, accessToken });
+  // console.log('IS AUTHORIZATION: ', { user, accessToken });
   const location = useLocation();
   // console.log('AUTHORIZATION LOCATION: ', location);
 

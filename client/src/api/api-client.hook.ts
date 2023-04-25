@@ -47,6 +47,7 @@ export const useApiClient = () => {
         ...config,
       };
       // console.log('REQUEST CONFIG: ', customConfig);
+      // console.log('Endpoint >>>', endpoint);
       let response = await fetch(endpoint, customConfig);
       // console.log('RESPONSE: ', response);
 
@@ -67,9 +68,11 @@ export const useApiClient = () => {
         // return Promise.reject({ message: 'Please re-authenticate' });
       }
 
-      if (!response.ok) {
-        return Promise.reject({ message: 'Please re-authenticate' });
-      }
+      // 'response.ok', response.ok);
+      // if (!response.ok) {
+      //   console.log('response in apiClient', response);
+      //   return Promise.reject({ message: 'Please re-authenticate' });
+      // }
 
       // console.log('RESPONSE: ', response);
       const responseData = await response.json();

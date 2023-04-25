@@ -8,7 +8,7 @@ const ENDPOINT = `${import.meta.env.VITE_API_URL}/api/users`;
 export const useUser = (): UseQueryResult<User> => {
   // export const useUser = (userIdnfo: Record<string, unknown>): UseQueryResult<User> => {
   const { userId, setUser, accessToken } = useAuthentication();
-  console.log('GET USER Details: ', { userId, accessToken });
+  //console.log('GET USER Details: ', { userId, accessToken });
   return useQuery(
     ['User', userId],
     async () => {
@@ -26,7 +26,7 @@ export const useUser = (): UseQueryResult<User> => {
       }
 
       const data: User = await response.json();
-      console.log('USER DATA: ', data);
+      //console.log('USER DATA: ', data);
 
       setUser(data);
 
