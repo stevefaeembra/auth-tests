@@ -33,7 +33,7 @@ export const client = async <T = unknown>(
     // },
     ...customConfig,
   };
-
+  console.log('hitting endpoint', `${apiURL}/${endpoint}`);
   return window.fetch(`${apiURL}/${endpoint}`, config).then(async response => {
     if (response.status === 401) {
       // queryCache.clear();

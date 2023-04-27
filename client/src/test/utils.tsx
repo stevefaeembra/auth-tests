@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { ReactElement, ReactNode } from 'react';
 
 import { RenderOptions } from '@storybook/addons';
 import { QueryClient, QueryClientConfig, QueryClientProvider } from '@tanstack/react-query';
 import { RenderHookOptions, RenderHookResult, render, renderHook } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+
+import { AuthenticationProvider } from '~/accounts/authentication/authentication.context';
 
 const queryClientConfig: QueryClientConfig = {
   defaultOptions: {
@@ -13,6 +16,12 @@ const queryClientConfig: QueryClientConfig = {
     mutations: {
       retry: false,
     },
+  },
+  logger: {
+    // turn off logging
+    log: () => {},
+    warn: () => {},
+    error: () => {},
   },
 };
 
@@ -41,7 +50,11 @@ const customRenderHook = <T, P>(
   options?: RenderHookOptions<unknown>,
 ): RenderHookResult<T, P> => {
   const wrapper = ({ children }: { children: ReactNode }): ReactElement => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <AuthenticationProvider>{children}</AuthenticationProvider>
+      </QueryClientProvider>
+    </MemoryRouter>
   );
 
   const utils = renderHook(() => callback(), { wrapper, ...options });

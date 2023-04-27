@@ -26,7 +26,7 @@ export const Login: FC = (): ReactElement => {
     isError: isLoginError,
     isLoading: isLoginLoading,
   } = useLogin();
-  console.log('LOGGED IN USER ID: ', userInfo);
+  // console.log('LOGGED IN USER ID: ', userInfo);
   // console.log('LOGIN ERROR: ', loginError);
   const {
     data: user,
