@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
+import { HTTP_BAD_REQUEST, HTTP_OK } from '~/api/api.constants';
 import { rest, server } from '~/mocks/server';
 import { act, renderHook, waitFor } from '~/test/utils';
-import { useRegister } from './register.hook';
+import { RegistrationFormType, useRegister } from './register.hook';
 
 const ENDPOINT = '*/api/accounts/register/';
 
@@ -19,15 +20,20 @@ describe('useRegisterHook', () => {
     // we're missing the confirm password
     const expectedMessage = 'Confirm Password field is empty';
     server.use(
-      rest.post(ENDPOINT, (req, res, ctx) => res(ctx.status(400), ctx.json({ error: { message: expectedMessage } }))),
+      rest.post(ENDPOINT, (req, res, ctx) =>
+        res(ctx.status(HTTP_BAD_REQUEST), ctx.json({ error: { message: expectedMessage } })),
+      ),
     );
-    const registerForm = {
+
+    const registerForm: RegistrationFormType = {
       email: 'bob@example.com',
       firstName: 'Bob',
       lastName: 'Ross',
       password: 'otherpassword',
+      confirmPassword: 'otherpassword',
     };
     const { result } = renderHook<Result, unknown>(() => useRegister());
+
     act(() => {
       result.current.mutate(registerForm);
     });
@@ -42,9 +48,12 @@ describe('useRegisterHook', () => {
     // we're missing the confirm password
     const expectedMessage = 'Email address not valid';
     server.use(
-      rest.post(ENDPOINT, (req, res, ctx) => res(ctx.status(400), ctx.json({ error: { message: expectedMessage } }))),
+      rest.post(ENDPOINT, (req, res, ctx) =>
+        res(ctx.status(HTTP_BAD_REQUEST), ctx.json({ error: { message: expectedMessage } })),
+      ),
     );
-    const registerForm = {
+
+    const registerForm: RegistrationFormType = {
       email: 'bob@example',
       firstName: 'Bob',
       lastName: 'Ross',
@@ -52,6 +61,7 @@ describe('useRegisterHook', () => {
       confirmPassword: 'otherpassword',
     };
     const { result } = renderHook<Result, unknown>(() => useRegister());
+
     act(() => {
       result.current.mutate(registerForm);
     });
@@ -65,9 +75,12 @@ describe('useRegisterHook', () => {
     // attempt to reuse existing email address
     const expectedMessage = 'An account already exists for this email address';
     server.use(
-      rest.post(ENDPOINT, (req, res, ctx) => res(ctx.status(400), ctx.json({ error: { message: expectedMessage } }))),
+      rest.post(ENDPOINT, (req, res, ctx) =>
+        res(ctx.status(HTTP_BAD_REQUEST), ctx.json({ error: { message: expectedMessage } })),
+      ),
     );
-    const registerForm = {
+
+    const registerForm: RegistrationFormType = {
       email: 'bob@example.com',
       firstName: 'Bob',
       lastName: 'Ross',
@@ -75,6 +88,7 @@ describe('useRegisterHook', () => {
       confirmPassword: 'notreallybob',
     };
     const { result } = renderHook<Result, unknown>(() => useRegister());
+
     act(() => {
       result.current.mutate(registerForm);
     });
@@ -87,8 +101,9 @@ describe('useRegisterHook', () => {
   it('should return if registration was successful', async () => {
     // happy path
     const expectedResponse = { id: 1 };
-    server.use(rest.post(ENDPOINT, (req, res, ctx) => res(ctx.status(200), ctx.json(expectedResponse))));
-    const registerForm = {
+    server.use(rest.post(ENDPOINT, (req, res, ctx) => res(ctx.status(HTTP_OK), ctx.json(expectedResponse))));
+
+    const registerForm: RegistrationFormType = {
       email: 'bob@example.com',
       firstName: 'Bob',
       lastName: 'Ross',
@@ -96,6 +111,7 @@ describe('useRegisterHook', () => {
       confirmPassword: 'mypassword',
     };
     const { result } = renderHook<Result, unknown>(() => useRegister());
+
     act(() => {
       result.current.mutate(registerForm);
     });

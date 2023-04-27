@@ -33,7 +33,7 @@ export const useLogin = () => {
       //console.log('** In the Mutator, big whoop! **');
       //console.log('LOGIN FORM: ', form);
       //console.log('ENDPOINT:', ENDPOINT);
-      const response = await apiClient(ENDPOINT, form);
+      const data = await apiClient(ENDPOINT, form);
       //console.log('Mutation response', response);
       // const response = await fetch(ENDPOINT, {
       //   method: 'POST',
@@ -53,7 +53,6 @@ export const useLogin = () => {
 
       //TODO find out why we were using the fetch API pattern here
       //const data = await response.json();
-      const data = response;
       //console.log('LOGIN RESPONSE: ', data);
 
       setUserId(data.id);
