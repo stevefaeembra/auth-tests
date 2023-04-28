@@ -52,8 +52,8 @@ export const useLogin = () => {
       setUserId(data.id);
       setAccessToken(data.accessToken);
       // return data;
-      // const data: User = await response.json();
-      console.log('LOGGED IN USER: ', data);
+      // // const data: User = await response.json();
+      // console.log('LOGGED IN USER: ', data);
       // setUser(data);
       // navigate(from, { replace: true });
 

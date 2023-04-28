@@ -48,6 +48,7 @@ export const useApiClient = () => {
       };
       // console.log('REQUEST CONFIG: ', customConfig);
       let response = await fetch(endpoint, customConfig);
+
       // console.log('RESPONSE: ', response);
 
       const previousRequest = customConfig;

@@ -24,6 +24,8 @@ describe('useErrorReport', () => {
 
     await act(() => result.current.mutate(report));
 
-    await waitFor(() => expect(result.current.data).toEqual({ id: 1, ...report }));
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.data).toEqual({ id: 1, ...report });
   });
 });
