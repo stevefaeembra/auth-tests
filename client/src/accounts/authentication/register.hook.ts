@@ -32,8 +32,8 @@ export const useRegister = () => {
     //   body: JSON.stringify(form),
     // });
 
-    // if (!response.ok) {
-    //   const error = await response.json();
+    // if (!data.ok) {
+    //   const error = await data.json();
 
     //   throw new Error(`Problem Registering User: ${error.message}`);
     // }
