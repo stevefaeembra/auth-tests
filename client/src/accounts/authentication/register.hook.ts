@@ -21,9 +21,9 @@ export const useRegister = () => {
   const apiClient = useApiClient();
 
   return useMutation(async (form: RegistrationFormType) => {
-    console.log('REGISTER MUTATION FORM: ', form);
+    // console.log('REGISTER MUTATION FORM: ', form);
     const data = await apiClient(ENDPOINT, form);
-    console.log('REGISTER RESULT: ', data);
+    // console.log('REGISTER RESULT: ', data);
     // const response = await fetch(ENDPOINT, {
     //   method: 'POST',
     //   headers: {

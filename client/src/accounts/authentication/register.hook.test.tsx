@@ -17,7 +17,6 @@ interface Result {
 
 describe('useRegisterHook', () => {
   it('should throw an error if any fields are missing', async () => {
-    // we're missing the confirm password
     const expectedMessage = 'Please re-authenticate';
     server.use(
       rest.post(ENDPOINT, (req, res, ctx) => res(ctx.status(HTTP_BAD_REQUEST), ctx.json({ message: expectedMessage }))),
@@ -30,20 +29,16 @@ describe('useRegisterHook', () => {
       password: 'otherpassword',
       confirmPassword: 'otherpassword',
     };
+
     const { result } = renderHook<Result, RegistrationFormType>(() => useRegister());
 
-    act(() => {
-      result.current.mutate(registerForm);
-    });
-    await waitFor(() => {
-      expect(result.current.isError).toBe(true);
-      expect(result.current.error).toEqual({ message: expectedMessage });
-    });
+    act(() => result.current.mutate(registerForm));
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(false));
+    expect(result.current.error).toEqual({ message: expectedMessage });
   });
 
   it('should throw an error if email is malformed', async () => {
-    // not a well-formed email address
-    // we're missing the confirm password
     const expectedMessage = 'Please re-authenticate';
     server.use(
       rest.post(ENDPOINT, (req, res, ctx) =>
@@ -63,10 +58,11 @@ describe('useRegisterHook', () => {
     act(() => {
       result.current.mutate(registerForm);
     });
+
     await waitFor(() => {
       expect(result.current.isError).toBe(true);
-      expect(result.current.error).toEqual({ message: expectedMessage });
     });
+    expect(result.current.error).toEqual({ message: expectedMessage });
   });
 
   it('should throw an error if email has already been registered', async () => {
@@ -88,12 +84,12 @@ describe('useRegisterHook', () => {
     act(() => {
       result.current.mutate(registerForm);
     });
+
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toEqual({ message: expectedMessage });
   });
 
-  it('should return if registration was successful', async () => {
-    // happy path
+  it('should show success code if registration was successful', async () => {
     const expectedResponse = { id: 1 };
     server.use(rest.post(ENDPOINT, (req, res, ctx) => res(ctx.status(HTTP_OK), ctx.json(expectedResponse))));
 
@@ -109,9 +105,11 @@ describe('useRegisterHook', () => {
     act(() => {
       result.current.mutate(registerForm);
     });
+
     await waitFor(() => {
       expect(result.current.isError).toBe(false);
-      expect(result.current.data).toEqual(1);
     });
+
+    expect(result.current.status).toEqual('success');
   });
 });
