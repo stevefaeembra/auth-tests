@@ -24,7 +24,9 @@ const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>
   render(ui, {
     wrapper: ({ children }: { children: ReactNode }): ReactElement => (
       <MemoryRouter>
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthenticationProvider>{children}</AuthenticationProvider>
+        </QueryClientProvider>
       </MemoryRouter>
     ),
     ...options,

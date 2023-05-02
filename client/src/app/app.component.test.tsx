@@ -9,12 +9,7 @@ import App from './app.component';
 
 describe('App', () => {
   it('should render the whole app', () => {
-    render(
-      <AuthenticationProvider>
-        <App />
-      </AuthenticationProvider>,
-    );
-
+    render(<App />);
     expect(screen.getByRole('heading', { name: /hello/i })).toBeInTheDocument();
   });
 });

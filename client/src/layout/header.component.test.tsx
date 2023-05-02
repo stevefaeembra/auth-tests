@@ -9,11 +9,7 @@ import Header from './header.component';
 
 describe('Header', () => {
   it('should render the header', () => {
-    render(
-      <AuthenticationProvider>
-        <Header />
-      </AuthenticationProvider>,
-    );
+    render(<Header />);
     expect(screen.getByRole('heading', { name: /hello/i })).toBeInTheDocument();
   });
 });
