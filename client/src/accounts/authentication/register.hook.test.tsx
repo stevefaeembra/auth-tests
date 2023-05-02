@@ -34,7 +34,7 @@ describe('useRegisterHook', () => {
 
     act(() => result.current.mutate(registerForm));
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(false));
+    await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toEqual({ message: expectedMessage });
   });
 
@@ -107,7 +107,7 @@ describe('useRegisterHook', () => {
     });
 
     await waitFor(() => {
-      expect(result.current.isError).toBe(false);
+      expect(result.current.isSuccess).toBe(true);
     });
 
     expect(result.current.status).toEqual('success');
