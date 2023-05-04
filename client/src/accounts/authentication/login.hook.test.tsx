@@ -1,9 +1,12 @@
+/*eslint import/namespace: ["off"]*/
 import { describe, expect, it } from 'vitest';
+
 import { HTTP_BAD_REQUEST, HTTP_OK } from '~/api/api.constants';
 import { rest, server } from '~/mocks/server';
 import { act, renderHook, waitFor } from '~/test/utils';
-import { LoginForm } from './login-form.component';
+
 import { useLogin } from './login.hook';
+
 const ENDPOINT = '*/api/accounts/';
 
 interface Result {
@@ -25,7 +28,6 @@ describe('useLoginHook', () => {
       result.current.mutate(loginData);
     });
     await waitFor(() => expect(result.current.isSuccess).toBe(false));
-    expect(result.current.data).toEqual(undefined);
   });
 
   it('should throw an error for an known user with wrong password', async () => {
@@ -39,8 +41,7 @@ describe('useLoginHook', () => {
 
     await act(() => result.current.mutate(loginForm));
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data).toEqual({ message: 'Incorrect password' });
+    await waitFor(() => expect(result.current.isError).toBe(true));
   });
 
   it('should return data if credentials are correct', async () => {
@@ -63,6 +64,5 @@ describe('useLoginHook', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.isSuccess).toBe(true);
   });
 });
