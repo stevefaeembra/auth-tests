@@ -21,27 +21,30 @@ interface Result {
 describe('useLoginHook', () => {
   it('should throw an error for an unknown user', async () => {
     const loginData = { email: 'bob@example.com', password: 'otherpassword', accessToken: 'foobar' };
-    server.use(rest.post(ENDPOINT, (req, res, ctx) => res(ctx.status(200), ctx.json({ message: 'User not found' }))));
+    const errorMessage = 'User not found';
+    server.use(rest.post(ENDPOINT, (req, res, ctx) => res(ctx.status(200), ctx.json({ message: errorMessage }))));
     const { result } = renderHook<Result, unknown>(() => useLogin());
 
     act(() => {
       result.current.mutate(loginData);
     });
-    await waitFor(() => expect(result.current.isSuccess).toBe(false));
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data.message).toBe(errorMessage);
+    console.log('result', JSON.stringify(result, null, 2));
   });
 
   it('should throw an error for an known user with wrong password', async () => {
     const loginForm = { email: 'john@example.com', password: 'otherpassword', accessToken: 'foobar' };
+    const errorMessage = 'Incorrect Password';
     server.use(
-      rest.post(ENDPOINT, (req, res, ctx) =>
-        res(ctx.status(HTTP_BAD_REQUEST), ctx.json({ message: 'Incorrect password' })),
-      ),
+      rest.post(ENDPOINT, (req, res, ctx) => res(ctx.status(HTTP_BAD_REQUEST), ctx.json({ message: errorMessage }))),
     );
     const { result } = renderHook<Result, unknown>(() => useLogin());
 
     await act(() => result.current.mutate(loginForm));
 
     await waitFor(() => expect(result.current.isError).toBe(true));
+    console.log('result', JSON.stringify(result, null, 2));
   });
 
   it('should return data if credentials are correct', async () => {
