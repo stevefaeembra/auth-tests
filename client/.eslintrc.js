@@ -10,11 +10,3 @@ module.exports = {
   ],
   plugins: ['jsx-a11y', 'jest-dom', 'testing-library', 'tailwindcss', 'vitest'],
 };
-// const eslintRules = {
-//   ...require("@astrosat/eslint-config-astrosat"),
-// };
-// console.log("ESLINT RULES: ", eslintRules);
-
-// module.exports = {
-//   ...eslintRules,
-// };

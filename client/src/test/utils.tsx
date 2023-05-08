@@ -5,6 +5,8 @@ import { QueryClient, QueryClientConfig, QueryClientProvider } from '@tanstack/r
 import { RenderHookOptions, RenderHookResult, render, renderHook } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
+import { AuthenticationProvider } from '~/accounts/authentication/authentication.context';
+
 const queryClientConfig: QueryClientConfig = {
   defaultOptions: {
     queries: {
@@ -41,7 +43,11 @@ const customRenderHook = <T, P>(
   options?: RenderHookOptions<unknown>,
 ): RenderHookResult<T, P> => {
   const wrapper = ({ children }: { children: ReactNode }): ReactElement => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <AuthenticationProvider>{children}</AuthenticationProvider>
+      </QueryClientProvider>
+    </MemoryRouter>
   );
 
   const utils = renderHook(() => callback(), { wrapper, ...options });
